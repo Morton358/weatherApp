@@ -11,6 +11,12 @@
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "devDependencies": {
+    "@types/react-redux": "^7.0.5",
     "concurrently": "^4.0.1"
+  },
+  "dependencies": {
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
   }
 }

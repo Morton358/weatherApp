@@ -1,8 +1,22 @@
-import React, { Component } from 'react'
+import React, { Component, Dispatch } from 'react'
+import axios from 'axios'
+import { connect } from 'react-redux'
+
 import logo from './logo.svg'
 import './App.css'
+import { AppState } from './store/types'
+import * as actions from './store/actions/index'
 
-class App extends Component {
+interface AppProps {
+  res: string
+  post: string
+  resToPost: string
+  error: Error | null
+  errorOccured: boolean
+  loading: boolean
+  onGetRequest: any
+}
+class App extends Component<AppProps> {
   state = {
     response: '',
     post: '',
@@ -10,31 +24,29 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.callApi()
-      .then((res) => this.setState({ response: res.express }))
-      .catch((err) => console.log(err))
+    // this.callApi()
+    this.props.onGetRequest()
   }
 
   callApi = async () => {
-    const response = await fetch('/api')
-    const body = await response.json()
-    if (response.status !== 200) throw Error(body.message)
-    return body
+    try {
+      const res = await axios.get('/api')
+      this.setState({ response: res.data })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   handleSubmit = async (e: React.FormEvent<EventTarget>) => {
     e.preventDefault()
-    const response = await fetch('/api/world', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ post: this.state.post }),
-    })
-    const body = await response.text()
-
-    this.setState({ responseToPost: body })
+    try {
+      const response = await axios.post('/api/world', { post: this.state.post })
+      this.setState({ responseToPost: response.data })
+    } catch (error) {
+      console.error(error)
+    }
   }
+
   render() {
     return (
       <div className="App">
@@ -47,7 +59,7 @@ class App extends Component {
             Learn React
           </a>
         </header>
-        <p>{this.state.response}</p>
+        <p>{this.props.res}</p>
         <form onSubmit={this.handleSubmit}>
           <p>
             <strong>Post to Server:</strong>
@@ -61,4 +73,24 @@ class App extends Component {
   }
 }
 
-export default App
+const mapStateToProps = (state: AppState) => {
+  return {
+    res: state.response,
+    post: state.post,
+    resToPost: state.responseToPost,
+    error: state.error,
+    errorOccured: state.errorOccured,
+    loading: state.loading,
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    onGetRequest: (): Dispatch<typeof actions.getResponse> => dispatch(actions.getResponse()),
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

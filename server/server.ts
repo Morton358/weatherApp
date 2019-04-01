@@ -17,7 +17,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/api', (req, res) => {
-    res.send({ express: 'Hello From Express' });
+  res.send('Hello From Express')
 })
 
 app.post('/api/world', (req, res) => {

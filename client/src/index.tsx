@@ -1,10 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
+import createSagaMiddleware from 'redux-saga';
+import thunk from 'redux-thunk';
+// import dotenv from 'dotenv';
+
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import reducer from "./store/reducers/app";
+import { watchApp } from './store/sagas/index';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// dotenv.config();
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducer, applyMiddleware(thunk, sagaMiddleware));
+
+sagaMiddleware.run(watchApp);
+
+ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
