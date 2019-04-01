@@ -1,6 +1,7 @@
 import React, { Component, Dispatch } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
+import { Button } from 'antd'; 
 
 import logo from './logo.svg'
 import './App.css'
@@ -65,7 +66,7 @@ class App extends Component<AppProps> {
             <strong>Post to Server:</strong>
           </p>
           <input type="text" value={this.state.post} onChange={(e) => this.setState({ post: e.target.value })} />
-          <button type="submit">Submit</button>
+          <Button type="primary">Submit</Button>
         </form>
         <p>{this.state.responseToPost}</p>
       </div>
