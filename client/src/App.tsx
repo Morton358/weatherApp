@@ -1,8 +1,8 @@
 import React, { Component, Dispatch } from 'react'
-import axios from 'axios'
 import { connect } from 'react-redux'
-import { Button } from 'antd'; 
+import { Button } from 'antd'
 
+import axios from './share/axios-instance'
 import logo from './logo.svg'
 import './App.css'
 import { AppState } from './store/types'
@@ -27,11 +27,23 @@ class App extends Component<AppProps> {
   componentDidMount() {
     // this.callApi()
     this.props.onGetRequest()
+    this.subscribeToCity('3094370')
+  }
+
+  subscribeToCity = async (cityID: string) => {
+    try {
+      const resp = await axios.get(`/server/subscribe/${cityID}`)
+      resp
+        ? console.log(`Client: You successfully subscribes to cityID: ${cityID}`)
+        : console.log(`Client: You do not subscribes to cityID: ${cityID}`)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   callApi = async () => {
     try {
-      const res = await axios.get('/api')
+      const res = await axios.get('/server')
       this.setState({ response: res.data })
     } catch (error) {
       console.error(error)
