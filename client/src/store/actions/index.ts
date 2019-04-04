@@ -1,1 +1,1 @@
-export { getResponse, getResponseStart, getResponseSuccess, getResponseFailed } from './app'
+export { getResponse, getResponseStart, getResponseSuccess, getResponseFailed, notificationCityWeather } from './app'

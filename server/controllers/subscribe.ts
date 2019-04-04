@@ -3,9 +3,7 @@ import axios from 'axios'
 
 dotenv.config()
 
-export const subscribeToCity = async (cityID: string): Promise<boolean> => {
-  console.log(`this is my server uri from .env.development ${process.env.SERVER_URI}`)
-
+export const subscribe = async (cityID: string): Promise<boolean> => {
   let result = false
   try {
     const resp = await axios({
@@ -18,8 +16,9 @@ export const subscribeToCity = async (cityID: string): Promise<boolean> => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      data: { cityId: parseInt(cityID, 10), url: `${process.env.SERVER_URI}/api/weather/${cityID}` },
+      data: { cityId: parseInt(cityID, 10), url: `${process.env.SERVER_URI}/api/weather/notification/${cityID}` },
     })
+    console.log('routes -> server-> subscribe -> resp.data: ' + resp.data)
     if (resp.data) {
       result = true
     }

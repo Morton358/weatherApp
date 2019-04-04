@@ -14,7 +14,7 @@ import { watchApp } from './store/sagas/index';
 // @ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk, sagaMiddleware)));
+export const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk, sagaMiddleware)));
 
 sagaMiddleware.run(watchApp);
 

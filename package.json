@@ -9,7 +9,7 @@
     "client": "cd client && yarn start",
     "server": "cd server && yarn dev",
     "api": "cd api && node index.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn api\" \"yarn server\" \"yarn client\""
+    "dev": "rm -rf ./api/assets && concurrently --kill-others-on-fail \"yarn api\" \"yarn server\" \"yarn client\""
   },
   "devDependencies": {
     "concurrently": "^4.0.1"

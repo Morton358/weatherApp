@@ -1,6 +1,9 @@
+import { Dispatch } from 'react'
+
 import * as actionTypes from './actions/actionTypes'
 
 export interface AppState {
+  cities: Map<number, CityData>
   response: string
   post: string
   responseToPost: string
@@ -9,7 +12,30 @@ export interface AppState {
   loading: boolean
 }
 
-export type ActionGetResponses =
+export interface AppProps extends AppState {
+  onGetRequest: () => Dispatch<ActionGetResponse>
+}
+
+export interface WeatherData {
+  cloudPercentage: number
+  rainAmount: number
+  temperature: number
+}
+
+export interface NotificationData {
+  cityID: string
+  weather: WeatherData
+}
+
+export interface CityData {
+  cloudPercentage: number
+  rainAmount: number
+  temperature: number
+}
+
+export type Actions = ActionGetResponses | ActionNotificationCityWeather
+
+type ActionGetResponses =
   | ActionGetResponseStart
   | ActionGetResponseSuccess
   | ActionGetResponseFailed
@@ -27,4 +53,12 @@ export interface ActionGetResponseFailed {
 }
 export interface ActionGetResponse {
   type: typeof actionTypes.GET_RESPONSE_INITIAL
+}
+
+export interface ActionNotificationCityWeather {
+  type: typeof actionTypes.NOTIFICATION_CITY_WEATHER
+  cityID: string
+  cloudPercentage: number
+  rainAmount: number
+  temperature: number
 }

@@ -1,86 +1,73 @@
-import React, { Component, Dispatch } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Button } from 'antd'
 
 import axios from './share/axios-instance'
-import logo from './logo.svg'
 import './App.css'
-import { AppState } from './store/types'
+import { AppState, AppProps } from './store/types'
 import * as actions from './store/actions/index'
+import initSocket from './services/notification'
 
-interface AppProps {
-  res: string
-  post: string
-  resToPost: string
-  error: Error | null
-  errorOccured: boolean
-  loading: boolean
-  onGetRequest: any
-}
 class App extends Component<AppProps> {
-  state = {
-    response: '',
-    post: '',
-    responseToPost: '',
-  }
-
-  componentDidMount() {
+  public componentDidMount() {
     // this.callApi()
     this.props.onGetRequest()
     this.subscribeToCity('3094370')
+      .then((resp) => console.log(resp))
+      .catch((error) => console.error(error))
+    initSocket()
   }
 
-  subscribeToCity = async (cityID: string) => {
+  private subscribeToCity = async (cityID: string) => {
     try {
       const resp = await axios.get(`/server/subscribe/${cityID}`)
       resp
         ? console.log(`Client: You successfully subscribes to cityID: ${cityID}`)
         : console.log(`Client: You do not subscribes to cityID: ${cityID}`)
+      return resp
     } catch (error) {
       console.error(error)
+      return error
     }
   }
 
-  callApi = async () => {
-    try {
-      const res = await axios.get('/server')
-      this.setState({ response: res.data })
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  // callApi = async () => {
+  //   try {
+  //     const res = await axios.get('/server')
+  //     this.setState({ response: res.data })
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
-  handleSubmit = async (e: React.FormEvent<EventTarget>) => {
-    e.preventDefault()
-    try {
-      const response = await axios.post('/api/world', { post: this.state.post })
-      this.setState({ responseToPost: response.data })
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  // handleSubmit = async (e: React.FormEvent<EventTarget>) => {
+  //   e.preventDefault()
+  //   try {
+  //     const response = await axios.post('/api/world', { post: this.state.post })
+  //     this.setState({ responseToPost: response.data })
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
   render() {
+    let temperatureOfCity = null
+    if (this.props.cities.get(3094370) !== undefined) {
+      // @ts-ignore
+      temperatureOfCity = this.props.cities.get(3094370).temperature
+    }
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-            Learn React
-          </a>
-        </header>
-        <p>{this.props.res}</p>
-        <form onSubmit={this.handleSubmit}>
+        <header className="App-header" />
+        <h3>Hello World</h3>
+        <p>{this.props.cities.get(3094370)}</p>
+        <p>{ temperatureOfCity }</p>
+        {/* <form onSubmit={this.handleSubmit}>
           <p>
             <strong>Post to Server:</strong>
           </p>
-          <input type="text" value={this.state.post} onChange={(e) => this.setState({ post: e.target.value })} />
+          <input type="text" value={this.state} onChange={(e) => this.setState({ post: e.target.value })} />
           <Button type="primary">Submit</Button>
-        </form>
-        <p>{this.state.responseToPost}</p>
+        </form> */}
       </div>
     )
   }
@@ -88,9 +75,10 @@ class App extends Component<AppProps> {
 
 const mapStateToProps = (state: AppState) => {
   return {
-    res: state.response,
+    cities: state.cities,
+    response: state.response,
     post: state.post,
-    resToPost: state.responseToPost,
+    responseToPost: state.responseToPost,
     error: state.error,
     errorOccured: state.errorOccured,
     loading: state.loading,
@@ -99,7 +87,7 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onGetRequest: (): Dispatch<typeof actions.getResponse> => dispatch(actions.getResponse()),
+    onGetRequest: () => dispatch(actions.getResponse()),
   }
 }
 

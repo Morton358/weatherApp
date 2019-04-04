@@ -1,8 +1,16 @@
 import * as actionTypes from '../actions/actionTypes'
 import { updateObject } from '../../share/utility'
-import { AppState, ActionGetResponses, ActionGetResponseSuccess, ActionGetResponseFailed } from '../types'
+import {
+  AppState,
+  Actions,
+  ActionGetResponseSuccess,
+  ActionGetResponseFailed,
+  ActionNotificationCityWeather,
+  CityData,
+} from '../types'
 
 const initialState: AppState = {
+  cities: new Map(),
   response: '',
   post: '',
   responseToPost: '',
@@ -32,7 +40,22 @@ const getResponseFailed = (state: AppState, action: ActionGetResponseFailed): Ap
   })
 }
 
-const reducer = (state = initialState, action: ActionGetResponses): AppState => {
+const notificationCityWeather = (state: AppState, action: ActionNotificationCityWeather): AppState => {
+  console.log(`reducers -> app.ts -> notificationCityWeather -> action.temperature is : ${action.temperature}`)
+  const tempCities = new Map(state.cities)
+  const cityData: CityData | undefined = tempCities.get(parseInt(action.cityID, 10))
+  if (cityData !== undefined) {
+    cityData.cloudPercentage = action.cloudPercentage
+    cityData.rainAmount = action.rainAmount
+    cityData.temperature = action.temperature
+    tempCities.set(parseInt(action.cityID, 10), cityData)
+  }
+  return updateObject(state, {
+    cities: tempCities,
+  })
+}
+
+const reducer = (state = initialState, action: Actions): AppState => {
   switch (action.type) {
     case actionTypes.GET_RESPONSE_START:
       return getResponseStart(state)
@@ -40,6 +63,8 @@ const reducer = (state = initialState, action: ActionGetResponses): AppState => 
       return getResponseSuccess(state, action)
     case actionTypes.GET_RESPONSE_FAILED:
       return getResponseFailed(state, action)
+    case actionTypes.NOTIFICATION_CITY_WEATHER:
+      return notificationCityWeather(state, action)
     default:
       return state
   }
