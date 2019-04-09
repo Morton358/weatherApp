@@ -8,9 +8,10 @@
   "author": "Volodymyr Kovalchuk",
   "license": "MIT",
   "dependencies": {
+    "@types/connect": "^3.4.32",
     "@types/jest": "24.0.11",
     "@types/node": "11.12.0",
-    "@types/react": "^16.8.10",
+    "@types/react": "^16.8.13",
     "@types/react-dom": "^16.8.3",
     "@types/socket.io-client": "^1.4.32",
     "antd": "^3.16.0",

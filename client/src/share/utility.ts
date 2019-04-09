@@ -1,15 +1,8 @@
-import { AppState } from '../store/types'
+import { RootState } from '../types'
 
-export const updateObject = (oldObject: AppState, updatedProperties: object) => {
+export const updateObject = (oldObject: RootState, updatedProperties: object) => {
   return {
     ...oldObject,
     ...updatedProperties,
   }
-}
-
-export const checkValidityInput = (value: string) => {
-  let isValid = true
-  const pattern = /^[a-zA-Z\u0080-\u024F\s\/\-\)\(\`\.\"\']+$/
-  isValid = pattern.test(value) && isValid
-  return isValid
 }

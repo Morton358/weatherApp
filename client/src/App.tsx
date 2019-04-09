@@ -1,66 +1,53 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Row, Col } from 'antd'
 
-import axios from './share/axios-instance'
+// import {serverAxios} from './share/axios-instance'
 import './App.css'
-import { AppState, AppProps } from './store/types'
+import { AppProps, RootState } from './types'
 import * as actions from './store/actions/index'
-import initSocket from './services/notification'
+import AddWidget from "./containers/AddWidget/AddWidget";
+// import initSocket from './services/notification'
 
 class App extends Component<AppProps> {
   public componentDidMount() {
-    // this.callApi()
-    this.props.onGetRequest()
-    this.subscribeToCity('3094370')
-      .then((resp) => console.log(resp))
-      .catch((error) => console.error(error))
-    initSocket()
+    this.props.onGetCityList()
+    this.props.onGetListOfWidgets()
+    // this.subscribeToCity('3094370')
+    //   .then((resp) => console.log(resp))
+    //   .catch((error) => console.error(error))
+    // initSocket()
   }
 
-  private subscribeToCity = async (cityID: string) => {
-    try {
-      const resp = await axios.get(`/server/subscribe/${cityID}`)
-      resp
-        ? console.log(`Client: You successfully subscribes to cityID: ${cityID}`)
-        : console.log(`Client: You do not subscribes to cityID: ${cityID}`)
-      return resp
-    } catch (error) {
-      console.error(error)
-      return error
-    }
-  }
-
-  // callApi = async () => {
+  // private subscribeToCity = async (cityID: string) => {
   //   try {
-  //     const res = await axios.get('/server')
-  //     this.setState({ response: res.data })
+  //     const resp = await serverAxios.get(`/server/subscribe/${cityID}`)
+  //     resp
+  //       ? console.log(`Client: You successfully subscribes to cityID: ${cityID}`)
+  //       : console.log(`Client: You do not subscribes to cityID: ${cityID}`)
+  //     return resp
   //   } catch (error) {
   //     console.error(error)
-  //   }
-  // }
-
-  // handleSubmit = async (e: React.FormEvent<EventTarget>) => {
-  //   e.preventDefault()
-  //   try {
-  //     const response = await axios.post('/api/world', { post: this.state.post })
-  //     this.setState({ responseToPost: response.data })
-  //   } catch (error) {
-  //     console.error(error)
+  //     return error
   //   }
   // }
 
   render() {
     let temperatureOfCity = null
-    if (this.props.cities.get(3094370) !== undefined) {
+    if (this.props.selectedCities.get(3094370) !== undefined) {
       // @ts-ignore
       temperatureOfCity = this.props.cities.get(3094370).temperature
     }
     return (
       <div className="App">
-        <header className="App-header" />
-        <h3>Hello World</h3>
-        <p>{this.props.cities.get(3094370)}</p>
-        <p>{ temperatureOfCity }</p>
+        <Row>
+          <Col span={24}>
+            <AddWidget /> 
+            <h3>Hello World</h3>
+            <p>{temperatureOfCity}</p>
+            <p>{this.props.cities[0] !== undefined ? this.props.cities[0].name : null }</p>
+          </Col>
+        </Row>
         {/* <form onSubmit={this.handleSubmit}>
           <p>
             <strong>Post to Server:</strong>
@@ -73,12 +60,10 @@ class App extends Component<AppProps> {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: RootState) => {
   return {
     cities: state.cities,
-    response: state.response,
-    post: state.post,
-    responseToPost: state.responseToPost,
+    selectedCities: state.selectedCities,
     error: state.error,
     errorOccured: state.errorOccured,
     loading: state.loading,
@@ -87,7 +72,8 @@ const mapStateToProps = (state: AppState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onGetRequest: () => dispatch(actions.getResponse()),
+    onGetCityList: () => dispatch(actions.getCityList()),
+    onGetListOfWidgets: () => dispatch(actions.getWidgetList())
   }
 }
 

@@ -1,35 +1,40 @@
 import * as actionTypes from './actionTypes'
 import {
-  ActionGetResponse,
-  ActionGetResponseStart,
-  ActionGetResponseSuccess,
-  ActionGetResponseFailed,
+  ActionGetCityList,
+  ActionGetCityListStart,
+  ActionGetCityListSuccess,
+  ActionGetCityListFailed,
   WeatherData,
   ActionNotificationCityWeather,
-} from '../types'
+  City,
+  ActionGetWidgetListStart,
+  ActionGetWidgetList,
+  ActionGetWidgetListSuccess,
+  ActionGetWidgetListFailed,
+} from '../../types'
 
-export const getResponseStart = (): ActionGetResponseStart => {
+export const getCityListStart = (): ActionGetCityListStart => {
   return {
-    type: actionTypes.GET_RESPONSE_START,
+    type: actionTypes.GET_CITY_LIST_START,
   }
 }
-export const getResponseSuccess = (data: string): ActionGetResponseSuccess => {
+export const getCityListSuccess = (cities: City[]): ActionGetCityListSuccess => {
   return {
-    type: actionTypes.GET_RESPONSE_SUCCESS,
-    data: data,
-  }
-}
-
-export const getResponseFailed = (error: Error): ActionGetResponseFailed => {
-  return {
-    type: actionTypes.GET_RESPONSE_FAILED,
-    getResponseError: error,
+    type: actionTypes.GET_CITY_LIST_SUCCESS,
+    cities,
   }
 }
 
-export const getResponse = (): ActionGetResponse => {
+export const getCityListFailed = (error: Error): ActionGetCityListFailed => {
   return {
-    type: actionTypes.GET_RESPONSE_INITIAL,
+    type: actionTypes.GET_CITY_LIST_FAILED,
+    getCityListError: error,
+  }
+}
+
+export const getCityList = (): ActionGetCityList => {
+  return {
+    type: actionTypes.GET_CITY_LIST_INITIAL,
   }
 }
 
@@ -45,5 +50,30 @@ export const notificationCityWeather = (cityID: string, weather: WeatherData): A
     cloudPercentage: weather.cloudPercentage,
     rainAmount: weather.rainAmount,
     temperature: weather.temperature,
+  }
+}
+
+export const getWidgetListStart = (): ActionGetWidgetListStart => {
+  return {
+    type: actionTypes.GET_WIDGET_LIST_START,
+  }
+}
+export const getWidgetListSuccess = (widgets: object): ActionGetWidgetListSuccess => {
+  return {
+    type: actionTypes.GET_WIDGET_LIST_SUCCESS,
+    widgets,
+  }
+}
+
+export const getWidgetListFailed = (error: Error): ActionGetWidgetListFailed => {
+  return {
+    type: actionTypes.GET_WIDGET_LIST_FAILED,
+    getWidgetListError: error,
+  }
+}
+
+export const getWidgetList = (): ActionGetWidgetList => {
+  return {
+    type: actionTypes.GET_WIDGET_LIST_INITIAL,
   }
 }

@@ -2,7 +2,7 @@ import openSocket from 'socket.io-client'
 
 import { store } from '../index'
 import * as actions from '../store/actions/index'
-import { NotificationData } from '../store/types'
+import { NotificationData } from '../types'
 
 const initSocket = () => {
   const socket = openSocket(process.env.REACT_APP_SERVER_HOST as string, {

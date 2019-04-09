@@ -1,7 +1,14 @@
 import axios from 'axios'
 
-const instance = axios.create({
+export const serverAxios = axios.create({
   baseURL: process.env.REACT_APP_SERVER_HOST,
 })
 
-export default instance
+export const appAxios = axios.create({
+  baseURL: process.env.REACT_APP_API_HOST,
+  headers: {
+    Authorization: process.env.REACT_APP_API_AUTHORIZATION,
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+})

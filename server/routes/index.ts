@@ -3,11 +3,11 @@ import express from 'express'
 import api from './api'
 import server from './server'
 
-const router = (emiter: SocketIO.Server) => {
+const router = (emiter: SocketIO.Server, store: any) => {
   const mainRouter = express.Router()
 
-  mainRouter.use('/api', api(emiter))
-  mainRouter.use('/server', server(emiter))
+  mainRouter.use('/api', api(emiter, store))
+  mainRouter.use('/server', server(emiter, store))
 
   return mainRouter
 }

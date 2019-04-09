@@ -77,4 +77,7 @@ lib-cov
 # Output of 'npm pack'
 *.tgz
 
+# store-data files
+/server/config.json
+
 

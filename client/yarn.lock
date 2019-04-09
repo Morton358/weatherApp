@@ -918,6 +918,12 @@
     "@svgr/plugin-svgo" "^4.0.3"
     loader-utils "^1.1.0"
 
+"@types/connect@^3.4.32":
+  version "3.4.32"
+  resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.32.tgz#aa0e9616b9435ccad02bc52b5b454ffc2c70ba28"
+  dependencies:
+    "@types/node" "*"
+
 "@types/hoist-non-react-statics@^3.3.0":
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#a59c0c995cc885bef1b8ec2241b114f9b35b517b"
@@ -970,9 +976,16 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.10":
+"@types/react@*":
   version "16.8.10"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.10.tgz#1ccb6fde17f71a62ef055382ec68bdc379d4d8d9"
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/react@^16.8.13":
+  version "16.8.13"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.13.tgz#a82b15aad9ab91c40edca0d6889b7745ae24f053"
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"

@@ -4,10 +4,14 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import _io from 'socket.io'
 import http from 'http'
+// @ts-ignore
+import Store from 'data-store'
 
 import router from './routes/index'
 import socketConnector from './socketConnector'
 
+const store = new Store({ path: 'config.json' })
+store.clear()
 dotenv.config()
 
 const app: express.Application = express()
@@ -21,6 +25,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 const server = http.Server(app)
 const io = _io(server, { origins: '*:*' })
 io.on('connection', socketConnector)
-app.use('/', router(io))
+app.use('/', router(io, store))
 
 server.listen(PORT, () => console.log(`LISTENING ON PORT ${PORT}`))

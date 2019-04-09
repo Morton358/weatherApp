@@ -1,8 +1,11 @@
-import { takeEvery } from 'redux-saga/effects'
+import { takeEvery, all } from 'redux-saga/effects'
 
-import { getResponseSaga } from './app'
+import { getCityListSaga, getWidgetListSaga } from './app'
 import * as actionTypes from '../actions/actionTypes'
 
 export function* watchApp() {
-  yield takeEvery(actionTypes.GET_RESPONSE_INITIAL, getResponseSaga)
+  yield all([
+    takeEvery(actionTypes.GET_CITY_LIST_INITIAL, getCityListSaga),
+    takeEvery(actionTypes.GET_WIDGET_LIST_INITIAL, getWidgetListSaga),
+  ])
 }
