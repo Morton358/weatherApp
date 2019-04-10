@@ -9,4 +9,4 @@ export {
   getWidgetListStart,
   getWidgetListSuccess,
 } from './app'
-export { addWidget } from './addWidget'
+export { addWidget, addWidgetStart, addWidgetSuccess, addWidgetFailed } from './addWidget'

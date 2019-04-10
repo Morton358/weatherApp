@@ -26,7 +26,9 @@ interface AppStateProps {
 interface AppOwnProps {}
 
 export type AddWidgetProps = AddWidgetDispatchProps & AddWidgetStateProps & AddWidgetOwnProps
-interface AddWidgetDispatchProps {}
+interface AddWidgetDispatchProps {
+  onAddWidget: (cityId: string) => Dispatch<ActionAddWidget>
+}
 interface AddWidgetStateProps {
   cities: City[]
 }
@@ -61,6 +63,9 @@ export type Actions =
   | ActionGetCityListFailed
   | ActionGetCityList
   | ActionAddWidget
+  | ActionAddWidgetStart
+  | ActionAddWidgetSuccess
+  | ActionAddWidgetFailed
   | ActionGetWidgetListStart
   | ActionGetWidgetListSuccess
   | ActionGetWidgetListFailed
@@ -89,8 +94,19 @@ export interface ActionNotificationCityWeather {
   temperature: number
 }
 export interface ActionAddWidget {
-  type: typeof actionTypes.ADD_WIDGET
-  cityID: number
+  type: typeof actionTypes.ADD_WIDGET_INITIAL
+  cityID: string
+}
+export interface ActionAddWidgetStart {
+  type: typeof actionTypes.ADD_WIDGET_START
+}
+export interface ActionAddWidgetSuccess {
+  type: typeof actionTypes.ADD_WIDGET_SUCCESS
+  cityData: NotificationData
+}
+export interface ActionAddWidgetFailed {
+  type: typeof actionTypes.ADD_WIDGET_FAILED
+  addWidgetError: Error
 }
 
 export interface ActionGetWidgetListStart {

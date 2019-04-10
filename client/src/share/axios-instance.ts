@@ -4,7 +4,7 @@ export const serverAxios = axios.create({
   baseURL: process.env.REACT_APP_SERVER_HOST,
 })
 
-export const appAxios = axios.create({
+export const apiAxios = axios.create({
   baseURL: process.env.REACT_APP_API_HOST,
   headers: {
     Authorization: process.env.REACT_APP_API_AUTHORIZATION,

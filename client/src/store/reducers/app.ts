@@ -1,5 +1,8 @@
+// @ts-ignore
+import 'map.prototype.tojson'
+
 import * as actionTypes from '../actions/actionTypes'
-import { updateObject } from '../../share/utility'
+import { updateObject, cloneObj } from '../../share/utility'
 import {
   RootState,
   Actions,
@@ -7,9 +10,10 @@ import {
   ActionGetCityListFailed,
   ActionNotificationCityWeather,
   CityData,
-  ActionAddWidget,
   ActionGetWidgetListFailed,
   ActionGetWidgetListSuccess,
+  ActionAddWidgetSuccess,
+  ActionAddWidgetFailed,
 } from '../../types'
 
 const initialState: RootState = {
@@ -45,6 +49,7 @@ const getCityListFailed = (state: RootState, action: ActionGetCityListFailed): R
 const notificationCityWeather = (state: RootState, action: ActionNotificationCityWeather): RootState => {
   console.log(`reducers -> app.ts -> notificationCityWeather -> action.temperature is : ${action.temperature}`)
   const tempCities = new Map(state.selectedCities)
+  console.log('TCL: tempCities', tempCities)
   const cityData: CityData | undefined = tempCities.get(parseInt(action.cityID, 10))
   if (cityData !== undefined) {
     cityData.cloudPercentage = action.cloudPercentage
@@ -55,18 +60,6 @@ const notificationCityWeather = (state: RootState, action: ActionNotificationCit
   return updateObject(state, {
     selectedCities: tempCities,
   })
-}
-
-const addWidget = (state: RootState, action: ActionAddWidget): RootState => {
-  if (state.selectedCities.has(action.cityID)) {
-    return updateObject(state, {
-      error: new Error('Choosen city already added !'),
-      errorOccured: true,
-    })
-  } else {
-    console.log('I am sending add widget to server')
-    return state
-  }
 }
 
 const getWidgetListStart = (state: RootState): RootState => {
@@ -102,6 +95,34 @@ const getWidgetListFailed = (state: RootState, action: ActionGetWidgetListFailed
   })
 }
 
+const addWidgetStart = (state: RootState): RootState => {
+  return updateObject(state, { loading: true })
+}
+
+const addWidgetSuccess = (state: RootState, action: ActionAddWidgetSuccess): RootState => {
+  console.log('TCL: reducer -> addWidgetSuccess -> cityData', action.cityData)
+  const citiesData = cloneObj(action.cityData)
+  const tempCities = new Map(state.selectedCities)
+  Object.entries(citiesData).forEach(([cityID, weather]) => {
+    tempCities.set(parseInt(cityID, 10), { ...(weather as CityData) })
+  })
+  console.log('TCL: tempCities', tempCities)
+  return updateObject(state, {
+    selectedCities: tempCities,
+    error: null,
+    errorOccured: false,
+    loading: false,
+  })
+}
+
+const addWidgetFailed = (state: RootState, action: ActionAddWidgetFailed): RootState => {
+  return updateObject(state, {
+    error: action.addWidgetError,
+    errorOccured: true,
+    loading: false,
+  })
+}
+
 const reducer = (state = initialState, action: Actions): RootState => {
   switch (action.type) {
     case actionTypes.GET_CITY_LIST_START:
@@ -112,8 +133,12 @@ const reducer = (state = initialState, action: Actions): RootState => {
       return getCityListFailed(state, action)
     case actionTypes.NOTIFICATION_CITY_WEATHER:
       return notificationCityWeather(state, action)
-    case actionTypes.ADD_WIDGET:
-      return addWidget(state, action)
+    case actionTypes.ADD_WIDGET_START:
+      return addWidgetStart(state)
+    case actionTypes.ADD_WIDGET_SUCCESS:
+      return addWidgetSuccess(state, action)
+    case actionTypes.ADD_WIDGET_FAILED:
+      return addWidgetFailed(state, action)
     case actionTypes.GET_WIDGET_LIST_START:
       return getWidgetListStart(state)
     case actionTypes.GET_WIDGET_LIST_SUCCESS:

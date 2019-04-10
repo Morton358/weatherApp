@@ -15,11 +15,9 @@ export class AddWidget extends Component<AddWidgetProps> {
   }
 
   private onSelect = (cityID: any) => {
-    this.setState({
-      selectedCityId: parseInt(cityID, 10)
-    })
     console.log(typeof cityID);
     console.log('onSelect -> cityID', cityID)
+    this.props.onAddWidget(cityID)
   }
 
   private handleSearch = (value: any) => {
@@ -76,7 +74,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    onAddWidget: (cityId: number) => dispatch(actions.addWidget(cityId)),
+    onAddWidget: (cityId: string) => dispatch(actions.addWidget(cityId)),
   }
 }
 

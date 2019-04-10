@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Row, Col } from 'antd'
+import { Row, Col, Spin, message, Card } from 'antd'
+import 'map.prototype.tojson'
 
 // import {serverAxios} from './share/axios-instance'
 import './App.css'
 import { AppProps, RootState } from './types'
 import * as actions from './store/actions/index'
-import AddWidget from "./containers/AddWidget/AddWidget";
-// import initSocket from './services/notification'
+import AddWidget from './containers/AddWidget/AddWidget'
+import initSocket from './services/notification'
 
 class App extends Component<AppProps> {
   public componentDidMount() {
@@ -16,7 +17,7 @@ class App extends Component<AppProps> {
     // this.subscribeToCity('3094370')
     //   .then((resp) => console.log(resp))
     //   .catch((error) => console.error(error))
-    // initSocket()
+    initSocket()
   }
 
   // private subscribeToCity = async (cityID: string) => {
@@ -33,19 +34,33 @@ class App extends Component<AppProps> {
   // }
 
   render() {
-    let temperatureOfCity = null
-    if (this.props.selectedCities.get(3094370) !== undefined) {
-      // @ts-ignore
-      temperatureOfCity = this.props.cities.get(3094370).temperature
+    let loading = null
+    let widgets = null
+    this.props.loading ? loading = ( <Spin size="large" /> ) : loading = null
+    if (this.props.errorOccured) {
+      console.log(`App.tsx -> error occured, error: ${this.props.error}`);
+      message.error(this.props.error)
     }
+    this.props.selectedCities.size !== 0
+      ? (widgets = (
+          <Card title="Wroclaw" bordered={false} style={{ width: 300 }}>
+            <p>weather data</p>
+          </Card>
+        ))
+      : (widgets = null)
     return (
       <div className="App">
         <Row>
           <Col span={24}>
-            <AddWidget /> 
+            <AddWidget />
             <h3>Hello World</h3>
-            <p>{temperatureOfCity}</p>
-            <p>{this.props.cities[0] !== undefined ? this.props.cities[0].name : null }</p>
+            <p>{this.props.cities[0] !== undefined ? this.props.cities[0].name : null}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            {loading}
+            {widgets}
           </Col>
         </Row>
         {/* <form onSubmit={this.handleSubmit}>
@@ -73,7 +88,7 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     onGetCityList: () => dispatch(actions.getCityList()),
-    onGetListOfWidgets: () => dispatch(actions.getWidgetList())
+    onGetListOfWidgets: () => dispatch(actions.getWidgetList()),
   }
 }
 
