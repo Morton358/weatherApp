@@ -9,11 +9,15 @@ import {
   ActionGetCityListSuccess,
   ActionGetCityListFailed,
   ActionNotificationCityWeather,
-  CityData,
+  WeatherData,
   ActionGetWidgetListFailed,
   ActionGetWidgetListSuccess,
   ActionAddWidgetSuccess,
   ActionAddWidgetFailed,
+  ActionRemoveWidgetSuccess,
+  ActionRemoveWidgetFailed,
+  ActionGetCityWeatherSuccess,
+  ActionGetCityWeatherFailed,
 } from '../../types'
 
 const initialState: RootState = {
@@ -50,7 +54,7 @@ const notificationCityWeather = (state: RootState, action: ActionNotificationCit
   console.log(`reducers -> app.ts -> notificationCityWeather -> action.temperature is : ${action.temperature}`)
   const tempCities = new Map(state.selectedCities)
   console.log('TCL: tempCities', tempCities)
-  const cityData: CityData | undefined = tempCities.get(parseInt(action.cityID, 10))
+  const cityData: WeatherData | undefined = tempCities.get(parseInt(action.cityID, 10))
   if (cityData !== undefined) {
     cityData.cloudPercentage = action.cloudPercentage
     cityData.rainAmount = action.rainAmount
@@ -69,14 +73,9 @@ const getWidgetListStart = (state: RootState): RootState => {
 const getWidgetListSuccess = (state: RootState, action: ActionGetWidgetListSuccess): RootState => {
   console.log('TCL: reducer -> getWidgetListSuccess -> widgets', action.widgets)
   const tempCities = new Map(state.selectedCities)
-  const re = new RegExp('^[0-9]{6,10}$', 'gm')
   if (Object.keys(action.widgets).length !== 0) {
     Object.entries(action.widgets).forEach(([key, value]) => {
-      if (re.test(key)) {
-        tempCities.set(parseInt(key, 10), { ...value })
-      } else {
-        console.error('app reducer -> getWidgetListSuccess -> bad key in widgets obj', key)
-      }
+      tempCities.set(parseInt(key, 10), { ...value })
     })
   }
   return updateObject(state, {
@@ -104,7 +103,7 @@ const addWidgetSuccess = (state: RootState, action: ActionAddWidgetSuccess): Roo
   const citiesData = cloneObj(action.cityData)
   const tempCities = new Map(state.selectedCities)
   Object.entries(citiesData).forEach(([cityID, weather]) => {
-    tempCities.set(parseInt(cityID, 10), { ...(weather as CityData) })
+    tempCities.set(parseInt(cityID, 10), { ...(weather as WeatherData) })
   })
   console.log('TCL: tempCities', tempCities)
   return updateObject(state, {
@@ -118,6 +117,67 @@ const addWidgetSuccess = (state: RootState, action: ActionAddWidgetSuccess): Roo
 const addWidgetFailed = (state: RootState, action: ActionAddWidgetFailed): RootState => {
   return updateObject(state, {
     error: action.addWidgetError,
+    errorOccured: true,
+    loading: false,
+  })
+}
+
+const removeWidgetStart = (state: RootState): RootState => {
+  return updateObject(state, { loading: true })
+}
+
+const removeWidgetSuccess = (state: RootState, action: ActionRemoveWidgetSuccess): RootState => {
+  console.log('TCL: reducer -> removeWidgetSuccess -> cityID', action.cityID)
+  const tempCities = new Map(state.selectedCities)
+  const result = tempCities.delete(parseInt(action.cityID, 10))
+  if (!result) {
+    return updateObject(state, {
+      error: new Error("Can't delete city from selectedCities of RootState"),
+      errorOccured: true,
+      loading: false,
+    })
+  } else {
+    console.log('TCL: tempCities', tempCities)
+    return updateObject(state, {
+      selectedCities: tempCities,
+      error: null,
+      errorOccured: false,
+      loading: false,
+    })
+  }
+}
+
+const removeWidgetFailed = (state: RootState, action: ActionRemoveWidgetFailed): RootState => {
+  return updateObject(state, {
+    error: action.removeWidgetError,
+    errorOccured: true,
+    loading: false,
+  })
+}
+
+const getCityWeatherStart = (state: RootState): RootState => {
+  return updateObject(state, { loading: true })
+}
+
+const getCityWeatherSuccess = (state: RootState, action: ActionGetCityWeatherSuccess): RootState => {
+  console.log('TCL: reducer -> getCityWeatherSuccess -> cityData', action.cityData)
+  const citiesData = cloneObj(action.cityData)
+  const tempCities = new Map(state.selectedCities)
+  Object.entries(citiesData).forEach(([cityID, weather]) => {
+    tempCities.set(parseInt(cityID, 10), { ...(weather as WeatherData) })
+  })
+  console.log('TCL: tempCities', tempCities)
+  return updateObject(state, {
+    selectedCities: tempCities,
+    error: null,
+    errorOccured: false,
+    loading: false,
+  })
+}
+
+const getCityWeatherFailed = (state: RootState, action: ActionGetCityWeatherFailed): RootState => {
+  return updateObject(state, {
+    error: action.getCityWeatherError,
     errorOccured: true,
     loading: false,
   })
@@ -139,6 +199,18 @@ const reducer = (state = initialState, action: Actions): RootState => {
       return addWidgetSuccess(state, action)
     case actionTypes.ADD_WIDGET_FAILED:
       return addWidgetFailed(state, action)
+    case actionTypes.REMOVE_WIDGET_START:
+      return removeWidgetStart(state)
+    case actionTypes.REMOVE_WIDGET_SUCCESS:
+      return removeWidgetSuccess(state, action)
+    case actionTypes.REMOVE_WIDGET_FAILED:
+      return removeWidgetFailed(state, action)
+    case actionTypes.GET_CITY_WEATHER_START:
+      return getCityWeatherStart(state)
+    case actionTypes.GET_CITY_WEATHER_SUCCESS:
+      return getCityWeatherSuccess(state, action)
+    case actionTypes.GET_CITY_WEATHER_FAILED:
+      return getCityWeatherFailed(state, action)
     case actionTypes.GET_WIDGET_LIST_START:
       return getWidgetListStart(state)
     case actionTypes.GET_WIDGET_LIST_SUCCESS:

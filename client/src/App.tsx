@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Spin, message, Card } from 'antd'
-import 'map.prototype.tojson'
+import { Row, Col, Spin, message } from 'antd'
+// import 'map.prototype.tojson'
 
 // import {serverAxios} from './share/axios-instance'
 import './App.css'
@@ -9,6 +9,7 @@ import { AppProps, RootState } from './types'
 import * as actions from './store/actions/index'
 import AddWidget from './containers/AddWidget/AddWidget'
 import initSocket from './services/notification'
+import Widgets from './containers/Widgets/Widgets'
 
 class App extends Component<AppProps> {
   public componentDidMount() {
@@ -33,45 +34,116 @@ class App extends Component<AppProps> {
   //   }
   // }
 
-  render() {
-    let loading = null
-    let widgets = null
-    this.props.loading ? loading = ( <Spin size="large" /> ) : loading = null
-    if (this.props.errorOccured) {
-      console.log(`App.tsx -> error occured, error: ${this.props.error}`);
+  // private getDisplayElements = () => {
+  //   if (this.props.loading) {
+  //     return <Spin className="loading" size="large" />
+  //   } else if (this.props.errorOccured) {
+  //     console.log(`App.tsx -> error occured, error: ${this.props.error}`)
+  //     message.error(this.props.error)
+  //   } else if (
+  //     !this.props.errorOccured &&
+  //     !this.props.loading &&
+  //     this.props.selectedCities.size === 0 &&
+  //     this.props.cities.length === 0
+  //   ) {
+  //     return null
+  //   } else if (
+  //     !this.props.errorOccured &&
+  //     !this.props.loading &&
+  //     this.props.selectedCities.size === 0 &&
+  //     this.props.cities.length !== 0
+  //   ) {
+  //     return (
+  //       <React.Fragment>
+  //         <Row>
+  //           <Col span={24}>
+  //             <AddWidget />
+  //           </Col>
+  //         </Row>
+  //         <Row>
+  //           <Col span={24}>{null}</Col>
+  //         </Row>
+  //       </React.Fragment>
+  //     )
+  //   } else if (
+  //     !this.props.errorOccured &&
+  //     !this.props.loading &&
+  //     this.props.selectedCities.size !== 0 &&
+  //     this.props.cities.length !== 0
+  //   ) {
+  //     return (
+  //       <React.Fragment>
+  //         <Row>
+  //           <Col span={24}>
+  //             <AddWidget />
+  //           </Col>
+  //         </Row>
+  //         <Row>
+  //           <Col span={24}>{this.getWidgetsComponet()}</Col>
+  //         </Row>
+  //       </React.Fragment>
+  //     )
+  //   } else {
+  //     return null
+  //   }
+  // }
+
+  private getWidgetsComponet = () => {
+    return <Widgets />
+  }
+
+  public render() {
+    let displayData = null
+    if (this.props.loading) {
+      displayData = <Spin className="loading" size="large" />
+    } else if (this.props.errorOccured) {
+      console.log(`App.tsx -> error occured, error: ${this.props.error}`)
       message.error(this.props.error)
+    } else if (
+      !this.props.errorOccured &&
+      !this.props.loading &&
+      this.props.selectedCities.size === 0 &&
+      this.props.cities.length === 0
+    ) {
+      displayData = null
+    } else if (
+      !this.props.errorOccured &&
+      !this.props.loading &&
+      this.props.selectedCities.size === 0 &&
+      this.props.cities.length !== 0
+    ) {
+      displayData = (
+        <React.Fragment>
+          <Row>
+            <Col span={24}>
+              <AddWidget />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>{null}</Col>
+          </Row>
+        </React.Fragment>
+      )
+    } else if (
+      !this.props.errorOccured &&
+      !this.props.loading &&
+      this.props.selectedCities.size !== 0 &&
+      this.props.cities.length !== 0
+    ) {
+      displayData = (
+        <React.Fragment>
+          <Row>
+            <Col span={24}>
+              <AddWidget />
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>{this.getWidgetsComponet()}</Col>
+          </Row>
+        </React.Fragment>
+      )
     }
-    this.props.selectedCities.size !== 0
-      ? (widgets = (
-          <Card title="Wroclaw" bordered={false} style={{ width: 300 }}>
-            <p>weather data</p>
-          </Card>
-        ))
-      : (widgets = null)
-    return (
-      <div className="App">
-        <Row>
-          <Col span={24}>
-            <AddWidget />
-            <h3>Hello World</h3>
-            <p>{this.props.cities[0] !== undefined ? this.props.cities[0].name : null}</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
-            {loading}
-            {widgets}
-          </Col>
-        </Row>
-        {/* <form onSubmit={this.handleSubmit}>
-          <p>
-            <strong>Post to Server:</strong>
-          </p>
-          <input type="text" value={this.state} onChange={(e) => this.setState({ post: e.target.value })} />
-          <Button type="primary">Submit</Button>
-        </form> */}
-      </div>
-    )
+    return <div className="App">{displayData}</div>
   }
 }
 

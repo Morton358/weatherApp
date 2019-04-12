@@ -1,0 +1,23 @@
+.widgets {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.widget {
+  margin: 5em;
+  width: 30vw;
+}
+
+.btn-delete {
+  right: 1rem;
+  top: 1rem;
+  cursor: pointer;
+  position: absolute;
+}
+
+.btn-refresh {
+  left: 1rem;
+  top: 1rem;
+  cursor: pointer;
+  position: absolute;
+}

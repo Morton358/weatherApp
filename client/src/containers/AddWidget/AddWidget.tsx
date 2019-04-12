@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Icon, Button, Input, AutoComplete } from 'antd'
+import { Input, AutoComplete, message } from 'antd'
 import { connect } from 'react-redux'
 
 import './AddWidget.css'
@@ -17,21 +17,16 @@ export class AddWidget extends Component<AddWidgetProps> {
   private onSelect = (cityID: any) => {
     console.log(typeof cityID);
     console.log('onSelect -> cityID', cityID)
-    this.props.onAddWidget(cityID)
+    this.props.selectedCities.size < 4 ? this.props.onAddWidget(cityID) : message.error('You have reached the limit of widgets')
   }
 
   private handleSearch = (value: any) => {
-    console.log(`I am inside handleSearch, value is: ${value}`)
     this.setState({
       dataSource: value ? this.searchResult(value) : [],
     })
-    console.log(`handleSearch -> state after setState is: ${this.state.dataSource}`)
-    console.log(this.state.dataSource)
   }
 
   private renderOption = (city: City) => {
-    console.log('I am inside renderOption')
-    console.log(typeof city.id)
     return <Option key={city.id}>{city.name}</Option>
   }
 
@@ -43,11 +38,10 @@ export class AddWidget extends Component<AddWidgetProps> {
   public render() {
     const { dataSource } = this.state
     return (
-      <div className="global-search-wrapper" style={{ width: 300 }}>
+      <div className="global-search-wrapper">
         <AutoComplete
           className="global-search"
           size="large"
-          style={{ width: '80%' }}
           dataSource={dataSource.map(this.renderOption)}
           onSelect={this.onSelect}
           onSearch={this.handleSearch}
@@ -56,11 +50,6 @@ export class AddWidget extends Component<AddWidgetProps> {
         >
           <Input />
         </AutoComplete>
-        {/* 
-        // @ts-ignore */}
-        <Button type="primary" shape="circle" className="btn-add-widget" onClick={this.handleAddWidget}>
-          <Icon type="plus-circle" />
-        </Button>
       </div>
     )
   }
@@ -69,6 +58,7 @@ export class AddWidget extends Component<AddWidgetProps> {
 const mapStateToProps = (state: RootState) => {
   return {
     cities: state.cities,
+    selectedCities: state.selectedCities
   }
 }
 

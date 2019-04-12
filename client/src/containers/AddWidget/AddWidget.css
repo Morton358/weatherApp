@@ -1,5 +1,5 @@
-.global-search-wrapper {
-  width: 55vw;
+/* .global-search-wrapper {
+  width: 100vw;
   margin: 3vh 20vw 5vh 20vw;
   display: flex;
 }
@@ -10,4 +10,26 @@
 
 .global-search-wrapper .btn-add-widget {
   margin-right: 5vw;
+} */
+
+/* .global-search-item-count {
+  position: absolute;
+  right: 16px;
+} */
+
+.global-search-wrapper {
+  width: 100vw;
 }
+
+.global-search.ant-select-auto-complete {
+  width: 50vw;
+  margin: 3vh 20vw 5vh 20vw;
+}
+
+/* .global-search.ant-select-auto-complete .ant-select-selection--single {
+  margin-right: -46px;
+}
+
+.global-search.ant-select-auto-complete .ant-input-affix-wrapper .ant-input-suffix {
+  right: 0;
+} */

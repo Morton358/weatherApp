@@ -5,7 +5,7 @@ import * as actionTypes from './store/actions/actionTypes'
 
 export interface RootState {
   cities: City[]
-  selectedCities: Map<number, CityData>
+  selectedCities: Map<number, WeatherData>
   error: Error | null
   errorOccured: boolean
   loading: boolean
@@ -18,7 +18,7 @@ interface AppDispatchProps {
 }
 interface AppStateProps {
   cities: City[]
-  selectedCities: Map<number, CityData>
+  selectedCities: Map<number, WeatherData>
   error: Error | null
   errorOccured: boolean
   loading: boolean
@@ -31,8 +31,20 @@ interface AddWidgetDispatchProps {
 }
 interface AddWidgetStateProps {
   cities: City[]
+  selectedCities: Map<number, WeatherData>
 }
 interface AddWidgetOwnProps {}
+
+export type WidgetsProps = WidgetsDispatchProps & WidgetsStateProps & WidgetsOwnProps
+interface WidgetsDispatchProps {
+  onRemoveWidget: (cityID: number) => Dispatch<ActionRemoveWidget>
+  onRefreshWeather: (cityID: number) => Dispatch<ActionGetCityWeather>
+}
+interface WidgetsStateProps {
+  selectedCities: Map<number, WeatherData>
+  cities: City[]
+}
+interface WidgetsOwnProps {}
 
 export interface WeatherData {
   cloudPercentage: number
@@ -50,12 +62,6 @@ export interface City {
   name: string
 }
 
-export interface CityData {
-  cloudPercentage: number
-  rainAmount: number
-  temperature: number
-}
-
 export type Actions =
   | ActionNotificationCityWeather
   | ActionGetCityListStart
@@ -70,6 +76,14 @@ export type Actions =
   | ActionGetWidgetListSuccess
   | ActionGetWidgetListFailed
   | ActionGetWidgetList
+  | ActionRemoveWidget
+  | ActionRemoveWidgetStart
+  | ActionRemoveWidgetSuccess
+  | ActionRemoveWidgetFailed
+  | ActionGetCityWeather
+  | ActionGetCityWeatherFailed
+  | ActionGetCityWeatherStart
+  | ActionGetCityWeatherSuccess
 
 export interface ActionGetCityListStart {
   type: typeof actionTypes.GET_CITY_LIST_START
@@ -122,4 +136,36 @@ export interface ActionGetWidgetListFailed {
 }
 export interface ActionGetWidgetList {
   type: typeof actionTypes.GET_WIDGET_LIST_INITIAL
+}
+
+export interface ActionRemoveWidget {
+  type: typeof actionTypes.REMOVE_WIDGET_INITIAL
+  cityID: number
+}
+export interface ActionRemoveWidgetStart {
+  type: typeof actionTypes.REMOVE_WIDGET_START
+}
+export interface ActionRemoveWidgetSuccess {
+  type: typeof actionTypes.REMOVE_WIDGET_SUCCESS
+  cityID: string
+}
+export interface ActionRemoveWidgetFailed {
+  type: typeof actionTypes.REMOVE_WIDGET_FAILED
+  removeWidgetError: Error
+}
+
+export interface ActionGetCityWeather {
+  type: typeof actionTypes.GET_CITY_WEATHER_INITIAL
+  cityID: number
+}
+export interface ActionGetCityWeatherStart {
+  type: typeof actionTypes.GET_CITY_WEATHER_START
+}
+export interface ActionGetCityWeatherSuccess {
+  type: typeof actionTypes.GET_CITY_WEATHER_SUCCESS
+  cityData: NotificationData
+}
+export interface ActionGetCityWeatherFailed {
+  type: typeof actionTypes.GET_CITY_WEATHER_FAILED
+  getCityWeatherError: Error
 }

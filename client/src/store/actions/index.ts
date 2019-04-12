@@ -10,3 +10,13 @@ export {
   getWidgetListSuccess,
 } from './app'
 export { addWidget, addWidgetStart, addWidgetSuccess, addWidgetFailed } from './addWidget'
+export {
+  removeWidget,
+  removeWidgetStart,
+  removeWidgetSuccess,
+  removeWidgetFailed,
+  getCityWeather,
+  getCityWeatherStart,
+  getCityWeatherSuccess,
+  getCityWeatherFailed,
+} from './widgets'
