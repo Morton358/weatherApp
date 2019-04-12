@@ -33,7 +33,6 @@ const getCityListStart = (state: RootState): RootState => {
 }
 
 const getCityListSuccess = (state: RootState, action: ActionGetCityListSuccess): RootState => {
-  console.log('TCL: reducer -> getCityListSuccess -> cities', action.cities)
   return updateObject(state, {
     cities: action.cities,
     error: null,
@@ -51,9 +50,7 @@ const getCityListFailed = (state: RootState, action: ActionGetCityListFailed): R
 }
 
 const notificationCityWeather = (state: RootState, action: ActionNotificationCityWeather): RootState => {
-  console.log(`reducers -> app.ts -> notificationCityWeather -> action.temperature is : ${action.temperature}`)
   const tempCities = new Map(state.selectedCities)
-  console.log('TCL: tempCities', tempCities)
   const cityData: WeatherData | undefined = tempCities.get(parseInt(action.cityID, 10))
   if (cityData !== undefined) {
     cityData.cloudPercentage = action.cloudPercentage
@@ -71,7 +68,6 @@ const getWidgetListStart = (state: RootState): RootState => {
 }
 
 const getWidgetListSuccess = (state: RootState, action: ActionGetWidgetListSuccess): RootState => {
-  console.log('TCL: reducer -> getWidgetListSuccess -> widgets', action.widgets)
   const tempCities = new Map(state.selectedCities)
   if (Object.keys(action.widgets).length !== 0) {
     Object.entries(action.widgets).forEach(([key, value]) => {
@@ -99,13 +95,11 @@ const addWidgetStart = (state: RootState): RootState => {
 }
 
 const addWidgetSuccess = (state: RootState, action: ActionAddWidgetSuccess): RootState => {
-  console.log('TCL: reducer -> addWidgetSuccess -> cityData', action.cityData)
   const citiesData = cloneObj(action.cityData)
   const tempCities = new Map(state.selectedCities)
   Object.entries(citiesData).forEach(([cityID, weather]) => {
     tempCities.set(parseInt(cityID, 10), { ...(weather as WeatherData) })
   })
-  console.log('TCL: tempCities', tempCities)
   return updateObject(state, {
     selectedCities: tempCities,
     error: null,
@@ -127,7 +121,6 @@ const removeWidgetStart = (state: RootState): RootState => {
 }
 
 const removeWidgetSuccess = (state: RootState, action: ActionRemoveWidgetSuccess): RootState => {
-  console.log('TCL: reducer -> removeWidgetSuccess -> cityID', action.cityID)
   const tempCities = new Map(state.selectedCities)
   const result = tempCities.delete(parseInt(action.cityID, 10))
   if (!result) {
@@ -137,7 +130,6 @@ const removeWidgetSuccess = (state: RootState, action: ActionRemoveWidgetSuccess
       loading: false,
     })
   } else {
-    console.log('TCL: tempCities', tempCities)
     return updateObject(state, {
       selectedCities: tempCities,
       error: null,
@@ -160,13 +152,11 @@ const getCityWeatherStart = (state: RootState): RootState => {
 }
 
 const getCityWeatherSuccess = (state: RootState, action: ActionGetCityWeatherSuccess): RootState => {
-  console.log('TCL: reducer -> getCityWeatherSuccess -> cityData', action.cityData)
   const citiesData = cloneObj(action.cityData)
   const tempCities = new Map(state.selectedCities)
   Object.entries(citiesData).forEach(([cityID, weather]) => {
     tempCities.set(parseInt(cityID, 10), { ...(weather as WeatherData) })
   })
-  console.log('TCL: tempCities', tempCities)
   return updateObject(state, {
     selectedCities: tempCities,
     error: null,

@@ -16,11 +16,9 @@ export const unsubscribe = async (cityID: string): Promise<boolean> => {
         'Content-Type': 'application/json',
       },
     })
-    console.log('routes -> server-> unsubscribe -> resp.data: ' + resp.data)
     if (resp.data) {
       result = true
     }
-    console.log(`response data from unsubscribeToCity: ${resp.data}`)
   } catch (error) {
     console.error(error)
     result = false

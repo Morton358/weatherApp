@@ -12,8 +12,6 @@ const initSocket = () => {
   })
   socket.on('ready', () => {
     socket.on('weatherNotification', (data: NotificationData) => {
-      console.log('services -> notification -> initSocket() -> I will be dispatching notificationCityWeather action')
-      console.log(data)
       store.dispatch(actions.notificationCityWeather(data.cityID, data.weather))
     })
   })

@@ -90,7 +90,7 @@ export interface ActionGetCityListStart {
 }
 export interface ActionGetCityListSuccess {
   type: typeof actionTypes.GET_CITY_LIST_SUCCESS
-  cities: Array<City>
+  cities: City[]
 }
 export interface ActionGetCityListFailed {
   type: typeof actionTypes.GET_CITY_LIST_FAILED

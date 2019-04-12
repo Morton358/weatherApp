@@ -9,8 +9,9 @@ export function* removeWidgetSaga(action: ActionRemoveWidget) {
   try {
     const cityID = action.cityID.toString()
     const serverResp = yield serverAxios.get(`/server/remove/${cityID}`)
-    console.log('sagas -> removeWidgetSaga -> serverResp:')
-    console.log(serverResp.data)
+    if (!serverResp.data) {
+      console.error("Can't remove widget, problem with server")
+    }
     yield serverAxios.get(`/server/unsubscribe/${cityID}`)
     yield put(actions.removeWidgetSuccess(cityID))
   } catch (error) {
@@ -23,8 +24,6 @@ export function* getCityWeatherSaga(action: ActionGetCityWeather) {
   try {
     const cityID = action.cityID.toString()
     const serverResp = yield serverAxios.get(`/server/weather/${cityID}`)
-    console.log('sagas -> getCityWeatherSaga -> serverResp:')
-    console.log(serverResp.data)
     yield put(actions.getCityWeatherSuccess(serverResp.data))
   } catch (error) {
     yield put(actions.getCityWeatherFailed(error))

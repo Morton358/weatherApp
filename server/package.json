@@ -11,7 +11,7 @@
     "start": "nodemon ./build/server.js",
     "dev": "ts-node-dev --respawn --transpileOnly server.ts",
     "prod": "tsc && node ./build/server.js",
-    "lint": "tslint './**/*.{ts,tsx}'"
+    "lint": "tslint -c tslint.json src/**/*.{ts,tsx} --fix --format verbose"
   },
   "dependencies": {
     "@types/cors": "^2.8.4",

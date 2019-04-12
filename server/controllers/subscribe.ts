@@ -18,11 +18,9 @@ export const subscribe = async (cityID: string): Promise<boolean> => {
       },
       data: { cityId: parseInt(cityID, 10), url: `${process.env.SERVER_URI}/api/weather/notification/${cityID}` },
     })
-    console.log('routes -> server-> subscribe -> resp.data: ' + resp.data)
     if (resp.data) {
       result = true
     }
-    console.log(`response data from subscribeToCity: ${resp.data}`)
   } catch (error) {
     console.error(error)
     result = false

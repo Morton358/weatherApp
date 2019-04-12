@@ -9,14 +9,12 @@ import * as actions from "../../store/actions/index";
 const Option = AutoComplete.Option
 
 export class AddWidget extends Component<AddWidgetProps> {
-  state = {
+  public state = {
     dataSource: [],
     selectedCityId: null
   }
 
   private onSelect = (cityID: any) => {
-    console.log(typeof cityID);
-    console.log('onSelect -> cityID', cityID)
     this.props.selectedCities.size < 4 ? this.props.onAddWidget(cityID) : message.error('You have reached the limit of widgets')
   }
 

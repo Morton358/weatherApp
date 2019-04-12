@@ -16,7 +16,6 @@ export const weather = async (cityID: string): Promise<object> => {
         'Content-Type': 'application/json',
       },
     })
-    console.log('routes -> server-> weather -> resp.data: ' + resp.data)
     if (resp.data) {
       result = resp.data
     }

@@ -11,12 +11,7 @@ export class Widgets extends Component<WidgetsProps> {
     return Array.from(this.props.selectedCities)
   }
 
-  // private handleRemoveWidget = (cityID: number) => {
-  // 	console.log("TCL: Widgets -> privatehandleRemoveWidget -> handleRemoveWidget -> cityID", cityID)
-  // 	console.log("TCL: Widgets -> privatehandleRemoveWidget -> handleRemoveWidget -> typeof cityID", typeof cityID)
-  //   this.props.onRemoveWidget(cityID)
-  // }
-  render() {
+  public render() {
     const IconFont = Icon.createFromIconfontCN({ scriptUrl: '//at.alicdn.com/t/font_1137269_mr5iom6igoj.js' })
     return (
       <div className="widgets">

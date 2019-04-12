@@ -39,11 +39,6 @@ export const getCityList = (): ActionGetCityList => {
 }
 
 export const notificationCityWeather = (cityID: string, weather: WeatherData): ActionNotificationCityWeather => {
-  console.log(
-    `actions -> app.ts -> notificationCityWeather -> I am receive the cityID: ${cityID} and weather: ${weather}, weather temperature is: ${
-      weather.temperature
-    }`
-  )
   return {
     type: actionTypes.NOTIFICATION_CITY_WEATHER,
     cityID,
