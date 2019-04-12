@@ -6,11 +6,9 @@ a chosen city. City list is persisted and will be visible after refreshing the p
 
 ## Getting Started
 
-##### Go to :
-
 Copy the code of progect with command `git clone`
 
-Then in folder where you run git clone of this repo, go to _client_ folder and create the `.env.development` file with this content:
+Then in folder where you run git clone go to weatherApp folder -> **client** folder and create the `.env.development` file with this content:
 
 ```
 REACT_APP_SERVER_HOST="http://localhost:3001"
@@ -25,7 +23,7 @@ SKIP_PREFLIGHT_CHECK=true
 
 ```
 
-Then go back to the root folder and go to the folder _server_ and create the `.env` file with this content:
+Then go back to the root folder and go to the folder **server** and create the `.env` file with this content:
 
 ```
 SERVER_PORT=3001
