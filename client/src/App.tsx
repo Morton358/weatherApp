@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Spin, message } from 'antd'
-// import 'map.prototype.tojson'
 
-// import {serverAxios} from './share/axios-instance'
 import './App.css'
 import { AppProps, RootState } from './types'
 import * as actions from './store/actions/index'
