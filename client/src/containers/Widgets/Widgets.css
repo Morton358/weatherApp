@@ -21,3 +21,13 @@
   cursor: pointer;
   position: absolute;
 }
+
+.div-widget-info {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 20% 1% 1% 1%;
+}
+
+.icon-weather {
+  margin-right: 8%;
+}

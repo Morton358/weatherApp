@@ -24,11 +24,7 @@ export class Widgets extends Component<WidgetsProps> {
             >
               {/* 
               // @ts-ignore */}
-              <Button
-                shape="circle"
-                className="btn-refresh"
-                onClick={() => this.props.onRefreshWeather(cityID)}
-              >
+              <Button shape="circle" className="btn-refresh" onClick={() => this.props.onRefreshWeather(cityID)}>
                 <IconFont type="icon-Refresh" />
               </Button>
               {/* 
@@ -40,15 +36,20 @@ export class Widgets extends Component<WidgetsProps> {
                 className="btn-delete"
                 onClick={() => this.props.onRemoveWidget(cityID)}
               />
-              <br />
-              <br />
-              <br />
-              <Icon type="cloud" /> &nbsp;
-              <span>Cloud percentage: {weather.cloudPercentage}</span> <br />
-              <IconFont type="icon-rain" /> &nbsp;
-              <span>Rain amount: {weather.rainAmount}</span> <br />
-              <IconFont type="icon-temperature" /> &nbsp;
-              <span>Temperature: {weather.temperature}</span> <br />
+              <div className="div-widget-info">
+                <div>
+                  <Icon type="cloud" className="icon-weather" />
+                  <span>Cloud percentage: {weather.cloudPercentage}</span>
+                </div>
+                <div>
+                  <IconFont type="icon-rain" className="icon-weather" />
+                  <span>Rain amount: {weather.rainAmount}</span>
+                </div>
+                <div>
+                  <IconFont type="icon-temperature" className="icon-weather" />
+                  <span>Temperature: {weather.temperature}</span>
+                </div>
+              </div>
             </Card>
           )
         })}
