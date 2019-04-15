@@ -4,7 +4,7 @@ import { subscribe } from '../controllers/subscribe'
 import { unsubscribe } from '../controllers/unsubscribe'
 import { weather } from '../controllers/weather'
 
-const server = (emiter: SocketIO.Server, store: any) => {
+export const server = (emiter: SocketIO.Server, store: any) => {
   const router = express.Router()
 
   router.get('/widgets', (req, res) => {
@@ -94,5 +94,3 @@ const server = (emiter: SocketIO.Server, store: any) => {
 
   return router
 }
-
-export default server

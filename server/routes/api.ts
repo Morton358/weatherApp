@@ -1,6 +1,6 @@
 import express from 'express'
 
-const api = (emiter: SocketIO.Server, store: any) => {
+export const api = (emiter: SocketIO.Server, store: any) => {
   const router = express.Router()
 
   router.post('/weather/notification/:cityID', (req, res, next) => {
@@ -13,5 +13,3 @@ const api = (emiter: SocketIO.Server, store: any) => {
 
   return router
 }
-
-export default api

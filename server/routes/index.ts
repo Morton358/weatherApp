@@ -1,9 +1,9 @@
 import express from 'express'
 
-import api from './api'
-import server from './server'
+import { api } from './api'
+import { server } from './server'
 
-const router = (emiter: SocketIO.Server, store: any) => {
+export const router = (emiter: SocketIO.Server, store: any) => {
   const mainRouter = express.Router()
 
   mainRouter.use('/api', api(emiter, store))
@@ -11,5 +11,3 @@ const router = (emiter: SocketIO.Server, store: any) => {
 
   return mainRouter
 }
-
-export default router

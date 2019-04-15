@@ -80,4 +80,7 @@ lib-cov
 # store-data files
 /server/config.json
 
+#api data files
+/api/assets/*
+
 

@@ -7,7 +7,7 @@ import http from 'http'
 // @ts-ignore
 import Store from 'data-store'
 
-import router from './routes/index'
+import { router } from './routes/index'
 import socketConnector from './socketConnector'
 
 const store = new Store({ path: 'config.json' })
