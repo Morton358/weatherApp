@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 import axios from 'axios'
 
+import { apiHeaders } from '../share/api'
+
 dotenv.config()
 
 export const unsubscribe = async (cityID: string): Promise<boolean> => {
@@ -10,11 +12,7 @@ export const unsubscribe = async (cityID: string): Promise<boolean> => {
       method: 'post',
       baseURL: process.env.API_BASE_URL,
       url: `/hooks/weather/unsubscribe/${cityID}`,
-      headers: {
-        Authorization: process.env.API_AUTHORIZATION,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers: apiHeaders,
     })
     if (resp.data) {
       result = true

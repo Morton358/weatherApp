@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 import axios from 'axios'
 
+import { apiHeaders } from '../share/api'
+
 dotenv.config()
 
 export const weather = async (cityID: string): Promise<object> => {
@@ -10,11 +12,7 @@ export const weather = async (cityID: string): Promise<object> => {
       method: 'get',
       baseURL: process.env.API_BASE_URL,
       url: `/weather/${cityID}`,
-      headers: {
-        Authorization: process.env.API_AUTHORIZATION,
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers: apiHeaders,
     })
     if (resp.data) {
       result = resp.data
