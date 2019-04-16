@@ -11,6 +11,23 @@ export class Widgets extends Component<WidgetsProps> {
     return Array.from(this.props.selectedCities)
   }
 
+  private refreshWeatherHandlers: any = {};
+  private removeWidgetHandlers: any = {};
+
+  private getRefreshWeatherHandler = (cityID: number) => {
+    if (!Object.prototype.hasOwnProperty.call(this.refreshWeatherHandlers, cityID)) {
+      this.refreshWeatherHandlers[cityID] = () => this.props.onRefreshWeather(cityID);
+    }
+    return this.refreshWeatherHandlers[cityID]
+  }
+
+  private getRemoveWidgetHandler = (cityID: number) => {
+    if (!Object.prototype.hasOwnProperty.call(this.removeWidgetHandlers, cityID)) {
+      this.removeWidgetHandlers[cityID] = () => this.props.onRemoveWidget(cityID);
+    }
+    return this.removeWidgetHandlers[cityID]
+  }
+
   public render() {
     const IconFont = Icon.createFromIconfontCN({ scriptUrl: '//at.alicdn.com/t/font_1137269_mr5iom6igoj.js' })
     return (
@@ -24,7 +41,7 @@ export class Widgets extends Component<WidgetsProps> {
             >
               {/* 
               // @ts-ignore */}
-              <Button shape="circle" className="btn-refresh" onClick={() => this.props.onRefreshWeather(cityID)}>
+              <Button shape="circle" className="btn-refresh" onClick={this.getRefreshWeatherHandler(cityID)}>
                 <IconFont type="icon-Refresh" />
               </Button>
               {/* 
@@ -34,7 +51,7 @@ export class Widgets extends Component<WidgetsProps> {
                 type="danger"
                 icon="delete"
                 className="btn-delete"
-                onClick={() => this.props.onRemoveWidget(cityID)}
+                onClick={this.getRemoveWidgetHandler(cityID)}
               />
               <div className="div-widget-info">
                 <div>
