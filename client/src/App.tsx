@@ -16,7 +16,7 @@ class App extends Component<AppProps> {
     initSocket()
   }
 
-  private getWidgetsComponet = () => {
+  private getWidgetsComponent = () => {
     return <Widgets />
   }
 
@@ -65,7 +65,7 @@ class App extends Component<AppProps> {
             </Col>
           </Row>
           <Row>
-            <Col span={24}>{this.getWidgetsComponet()}</Col>
+            <Col span={24}>{this.getWidgetsComponent()}</Col>
           </Row>
         </React.Fragment>
       )
