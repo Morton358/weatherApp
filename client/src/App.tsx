@@ -16,10 +16,6 @@ class App extends Component<AppProps> {
     initSocket()
   }
 
-  private getWidgetsComponent = () => {
-    return <Widgets />
-  }
-
   public render() {
     let displayData = null
     const statesOfApp = {
@@ -69,7 +65,9 @@ class App extends Component<AppProps> {
             </Col>
           </Row>
           <Row>
-            <Col span={24}>{this.getWidgetsComponent()}</Col>
+            <Col span={24}>
+              <Widgets />
+            </Col>
           </Row>
         </React.Fragment>
       )
