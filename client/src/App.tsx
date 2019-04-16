@@ -22,23 +22,32 @@ class App extends Component<AppProps> {
 
   public render() {
     let displayData = null
-    if (this.props.loading) {
+    const statesOfApp = {
+      loading: this.props.loading,
+      error: this.props.error,
+      initialState:
+        !this.props.errorOccured &&
+        !this.props.loading &&
+        this.props.selectedCities.size === 0 &&
+        this.props.cities.length === 0,
+      noSelectedCities:
+        !this.props.errorOccured &&
+        !this.props.loading &&
+        this.props.selectedCities.size === 0 &&
+        this.props.cities.length !== 0,
+      selectedCities:
+        !this.props.errorOccured &&
+        !this.props.loading &&
+        this.props.selectedCities.size !== 0 &&
+        this.props.cities.length !== 0,
+    }
+    if (statesOfApp.loading) {
       displayData = <Spin className="loading" size="large" />
-    } else if (this.props.errorOccured) {
+    } else if (statesOfApp.error) {
       message.error(this.props.error)
-    } else if (
-      !this.props.errorOccured &&
-      !this.props.loading &&
-      this.props.selectedCities.size === 0 &&
-      this.props.cities.length === 0
-    ) {
+    } else if (statesOfApp.initialState) {
       displayData = null
-    } else if (
-      !this.props.errorOccured &&
-      !this.props.loading &&
-      this.props.selectedCities.size === 0 &&
-      this.props.cities.length !== 0
-    ) {
+    } else if (statesOfApp.noSelectedCities) {
       displayData = (
         <React.Fragment>
           <Row>
@@ -51,12 +60,7 @@ class App extends Component<AppProps> {
           </Row>
         </React.Fragment>
       )
-    } else if (
-      !this.props.errorOccured &&
-      !this.props.loading &&
-      this.props.selectedCities.size !== 0 &&
-      this.props.cities.length !== 0
-    ) {
+    } else if (statesOfApp.selectedCities) {
       displayData = (
         <React.Fragment>
           <Row>
