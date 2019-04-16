@@ -23,7 +23,6 @@ export const subscribe = async (cityID: string): Promise<boolean> => {
     }
   } catch (error) {
     console.error(error)
-    result = false
   }
   return result
 }
